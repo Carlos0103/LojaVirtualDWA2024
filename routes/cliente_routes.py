@@ -120,7 +120,7 @@ async def get_carrinho(request: Request):
     total_pedido = sum([item.valor_item for item in itens_pedido])
     return templates.TemplateResponse(
         "pages/carrinho.html",
-        {"request": request, "itens": itens_pedido, "valor_total": total_pedido, "pedido": pedido_carrinho},
+        {"request": request, "itens": itens_pedido, "valor_total": total_pedido},
     )
 
 
@@ -139,15 +139,16 @@ async def get_confirmacaopedido(request: Request):
     PedidoRepo.atualizar_para_fechar(
         pedido_carrinho.id, request.state.cliente.endereco, valor_total
     )
-    pedido_carrinho = PedidoRepo.obter_por_id(pedido_carrinho.id)
-    pedido_carrinho.endereco_entrega = pedido_carrinho.endereco_entrega.replace(
-        "\n", "<br>"
-    )
-    pedido_carrinho.itens = itens_pedido
-    return templates.TemplateResponse(
-        "pages/confirmacaopedido.html",
-        {"request": request, "pedido": pedido_carrinho},
-    )
+    # pedido_carrinho = PedidoRepo.obter_por_id(pedido_carrinho.id)
+    # pedido_carrinho.endereco_entrega = pedido_carrinho.endereco_entrega.replace(
+    #     "\n", "<br>"
+    # )
+    # pedido_carrinho.itens = itens_pedido
+    # return templates.TemplateResponse(
+    #     "pages/confirmacaopedido.html",
+    #     {"request": request, "pedido": pedido_carrinho},
+    # )
+    return RedirectResponse(f"/cliente/detalhespedido/{pedido_carrinho.id}")
 
 
 @router.get("/pagamentopedido/{id_pedido:int}", response_class=HTMLResponse)
