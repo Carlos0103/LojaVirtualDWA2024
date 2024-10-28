@@ -4,6 +4,6 @@ class ProblemDetailsDto:
         self.msg = msg
         self.type = type
         self.loc = loc
-        
+
     def to_dict(self):
         return self.__dict__
